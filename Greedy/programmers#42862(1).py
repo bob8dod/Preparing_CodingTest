@@ -7,5 +7,3 @@ def solution(n, lost, reserve):
         elif r+1 in after_lost:
             after_lost.remove(r+1)
     return n - len(after_lost)
-
-print(solution(5, [2, 3, 4], [3, 4, 5]))
