@@ -1,7 +1,9 @@
+# 주사위 네개 최적화
 """
 받아온 dice list를 정렬하여 판단. -> 훨씬 효율적
 정렬을 통해 판단하면 훨씬 편함 -> 어차피 dice의 가짓수는 6가지!
 """
+
 def calc():
     dice = sorted(map(int, input().split()))
     # case 1
