@@ -18,7 +18,7 @@ def gcd1(a, b):
     return result
 
 
-# ver2 _ 뒤로 진행(min(a,b)부터 체크) -> 더 빠름
+# ver2 _ 뒤로 진행(min(a,b)부터 체크) -> 더 빠르게 진행하기 위함
 def gcd2(a, b):
     result = 0
     for i in range(min(a, b), 0, -1):
