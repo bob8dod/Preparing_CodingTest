@@ -1,6 +1,6 @@
 # 2961 도영이가 만든 맛있는 음식 _ 19mins
 """
-가능한 모든 조합을 찾아내어
+가능한 모든 조합(combination)을 찾아내어
 모두 계산해 놓은 뒤 가장 작은 값을 도출
 """
 from itertools import combinations
