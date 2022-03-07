@@ -1,2 +1,1 @@
-# 1+ coding per day
-# Python
+#Using Python
