@@ -42,5 +42,3 @@ def solution(rows, columns, queries):
         result.append(min_val)
 
     return result
-
-print(solution(6, 6, [[2, 2, 5, 4], [3, 3, 6, 6], [5, 1, 6, 3]]))
