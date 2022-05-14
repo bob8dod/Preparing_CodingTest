@@ -54,3 +54,10 @@ def era(N):
         for j in range(i*i, N+1, i):
             check[j] = True
     return check, prime
+
+# dictionary 정렬 (both key and value)
+def dict_sort(dic):
+    # dic = {'art':3, 'cat':2, 'bear':3, 'act':1}
+    name_sort = sorted(dic.items())
+    value_sort = sorted(name_sort, key=lambda x:x[1], reverse=True)
+    return value_sort
