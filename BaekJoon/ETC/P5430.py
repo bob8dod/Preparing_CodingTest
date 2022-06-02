@@ -1,4 +1,4 @@
-# BaekJoon P5430 AC Gold5
+# BaekJoon P5430 AC 포인터 Gold5
 """
 [풀이]
 시간 복잡도를 개선하기 위해 포인터로 접근.
