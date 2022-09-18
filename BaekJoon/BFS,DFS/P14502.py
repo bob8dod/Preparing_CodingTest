@@ -1,72 +1,62 @@
-# BaekJoon P14502 연구소 (구현+DFS/BFS,Gold5)
+# BaekJoon P14502 "연구소" (그래프, 전수조사 | G4)
 """
-[실수]
-- deepcopy를 사용하여 2차원 배열을 복사하려함 -> deepcopy가 일반 for문으로 배정하는 것보다 100배 느림!
-
-[부족했던 점]
-- 구현이 너무 느림. 코드 작성만 20분 걸린듯!
-
-[풀이]
-일단 벽이 세워질 수 있는 위치에 대한 탐색을 combination으로 뽑아오고 판단하여 진행
-3개 모두 벽이 세워질 수 있는 공간이다 -> 해당 벽들을 반영한 MAP에 대해 바이러스를 퍼트리는 bfs 진행
-바이러스가 모두 퍼지고 난 후의 안전구역 count!
-매 comination 마다의 결과의 count의 최댓값을 계속해서 비교 => answer
-
+---[실수]---
+---[부족한 점]---
+전수조사로 풀면 무조건 안될 것이라 생각함 -> 분명 시간초과가 발생할 것이라고 생각
+---[풀이]---
+가장 먼저 벽이 될 수 있는 후보(0)들과 바이러스(2)의 위치를 확인한 후
+전수조사(조합->combinations)를 통해 안전구역의 크기가 가장 큰 놈을 확인
+이때 각 후보들의 조합을 통해 일일히 해당 조합으로 인해 벽이 설치 될 때의 바이러스의 전파(bfs) 후 안전구연의 크기 확인
+---[비고]---
+1트 -> 메모리 : 32516 | 시간 : 3440 (deepcopy 사용)
+2트 -> 메모리 : 32500 | 시간 : 2412 (list comprehension)
+추가적으로 시간을 줄일 방법은 있을 듯
 """
-from itertools import combinations
+import sys
 from collections import deque
+from itertools import combinations
 
-di = [[0, 1], [1, 0], [0, -1], [-1, 0]]
 
-def bfs(temp, n, m):
-    visited = [[0 for _ in range(m)] for _ in range(n)]
+def bfs(wmap, viruses, n, m):
+    d = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+    q = deque(viruses)
+    while q:
+        ci, cj = q.popleft()
+        for di, dj in d:
+            ni, nj = ci + di, cj + dj
+            if (0 <= ni < n and 0 <= nj < m) and wmap[ni][nj] == 0:
+                wmap[ni][nj] = 2
+                q.append([ni, nj])
+
+
+def solution(n, m, graph):
+    candidates = [] # 새로운 3개의 벽 후보 (위치)
+    viruses = [] # 바이러스의 위치
+    # 벽 후보와 바이러스 위치 확인
     for i in range(n):
         for j in range(m):
-            if temp[i][j] == 2:
-                q = deque([[i, j]])
-                visited[i][j] = 1
-                while q:
-                    ci, cj = q.popleft()
-                    for ti, tj in di:
-                        ni, nj = ci + ti, cj + tj
-                        if (0 <= ni < n and 0 <= nj < m) and not visited[ni][nj]:
-                            visited[ni][nj] = 1
-                            if temp[ni][nj] == 0:
-                                temp[ni][nj] = 2
-                                q.append([ni, nj])
+            if graph[i][j] == 0:
+                candidates.append([i, j])
+            elif graph[i][j] == 2:
+                viruses.append([i, j])
 
+    max_result = 0 # 결과 값
+    # 벽 후보에 대한 조합 확인 (전수 조사)
+    for walls in combinations(candidates, 3):
+        wmap = [[graph[i][j] for j in range(m)] for i in range(n)] # list comprehension
+        for wi, wj in walls: # 벽 설치
+            wmap[wi][wj] = 1
+        bfs(wmap, viruses, n, m) # 해당 벽에 따른 바이러스 전파
+        result = 0
+        # 안전구역 확인
+        for k in range(n):
+            result += wmap[k].count(0)
+        max_result = max(max_result, result) # 지속적으로 값 비교
 
-def solution(n, m, gmap):
-    num_list = [i for i in range(n * m)]
-    answer = 0
-    for com in combinations(num_list, 3):
-        temp = [[i for i in row] for row in gmap]
-        flag = 0
-
-        for point in com:
-            i, j = point // m, point % m
-            if temp[i][j] != 0:
-                flag = 1
-                break
-            else:
-                temp[i][j] = 1
-
-        if flag: continue
-
-        bfs(temp, n, m)
-
-        cnt = 0
-        for i in range(n):
-            for j in range(m):
-                if temp[i][j] == 0:
-                    cnt += 1
-
-        answer = max(answer, cnt)
-
-    return answer
+    return max_result
 
 
 if __name__ == '__main__':
     N, M = map(int, input().split())
-    gmap = [list(map(int, input().split())) for _ in range(N)]
+    gmap = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
     print(solution(N, M, gmap))
