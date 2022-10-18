@@ -1,4 +1,4 @@
-# BaekJoon P15686 치킨거리 (구현, 완전탐색 | Gold5)
+# BaekJoon P15686 "치킨거리" (구현, 완전탐색 | Gold5)
 """
 [실수]
 map이면 dfs,bfs로 조져야겠다는 생각만 함
