@@ -61,3 +61,7 @@ def dict_sort(dic):
     name_sort = sorted(dic.items())
     value_sort = sorted(name_sort, key=lambda x:x[1], reverse=True)
     return value_sort
+
+def dict_save(dic):
+    dic[(1,3)] = 1
+    return dic[(1,3)]
